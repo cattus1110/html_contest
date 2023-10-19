@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>工作項目</title>
+    <script src="src/js/vue.js"></script>
+    <style>
+         .filter {
+            display: inline;
+        }
+        .menu {
+            display: inline-block;
+            width: 20%;
+            vertical-align: top;
+        }
+
+        .content {
+            display: inline-block;
+            width: 80%;
+            vertical-align: top;
+        }
+        .area {
+            border: 1;
+            background-color: darkgray;
+            border-style: solid;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="menu">
+            目前登入帳號=>{{ this.userInfo.account }}
+            <ul>
+                <li v-if="this.userInfo.role==0"><a href="#" @click="menuEvent(1)">會員管理</a></li>
+                <li v-if="this.userInfo.role==0"><a href="#" @click="menuEvent(3)">工作項目</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <br>
+            <div class="filter">
+                查詢日期:
+                <input type="date" name="" id="" v-model="searchCondition.Datetime">
+                優先順序:
+                <select name="" v-model="searchCondition.Sort">
+                    <option value="0">全部</option>
+                    <option v-for="item in sortArray" :value="item.id">{{item.name}}</option>
+                </select>
+                處理狀態:
+                <select name="" v-model="searchCondition.State">
+                    <option value="0">全部</option>
+                    <option v-for="item in stateArray" :value="item.id">{{item.name}}</option>
+                </select>
+                <input type="button" value="查詢" @click="Search()">
+                <input type="button" value="新增" @click="addWorkItem()">
+            </div>
+            <table border="1" style="width: 100%;" v-if="workItemsArray.workItems.length>0">
+                <tr>
+                    <th>時間</th>
+                    <th>工作計畫</th>
+                </tr>
+                <tr>
+                    <td>00-02</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi00" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>02-04</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi02" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>04-06</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi04" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>06-08</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi06" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>08-10</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi08" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>10-12</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi10" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>12-14</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi12" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>14-16</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi14" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>16-18</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi16" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>18-20</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi18" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>20-22</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi20" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>22-24</td>
+                    <td>
+                        <div v-for="item in workItemsArray.wi22" class="area">
+                            {{item.work_name}}<br>{{convertToStateText(item.work_state)}}
+                            <br>{{convertToSortText(item.work_sort)}}
+                            <input type="button" value="編輯" @click="editWorkItem(item)">
+                            <input type="button" value="刪除" @click="deleteWorkItem(item)">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div v-if="editState">
+                <table border="1" style="width: 40%">
+                    <tr>
+                        <td>工作名稱</td>
+                        <td colspan="3"><input type="text" v-model="model.workName" />
+                            <input type="hidden" name="id" v-model="model.id">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>處理狀態</td>
+                        <td>
+                            <select name="" v-model="model.workState">
+                                <option v-for="item in stateArray" :value="item.id">{{item.name}}</option>
+                            </select>
+                        </td>
+                        <td>優先情形</td>
+                        <td>
+                            <select name="" v-model="model.workSort">
+                                <option v-for="item in sortArray" :value="item.id">{{item.name}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>開始時間</td>
+                        <td>
+                            <input type="datetime-local" name="" id="" v-model="model.workStartTime">
+                        </td>
+                        <td>結束時間</td>
+                        <td>
+                            <input type="datetime-local" name="" id="" v-model="model.workEndTime">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">工作內容<br>
+                            <textarea name="" id="" cols="30" rows="3" style="width: 90%;" v-model="model.workContent">
+                        </textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: center">
+                            <input type="button" value="儲存" @click="saveWorkItem()" />
+                            <input type="button" value="取消" @click="cancelWorkItem()" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="src/js/WorkItem.js"></script>
+</body>
+
+</html>

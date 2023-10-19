@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="src/js/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="/Website/src/css/Login.css">
+</head>
+
+<body>
+    <div id="app">
+        <table style="border: black solid 1px">
+            <tr>
+                <th>帳號</th>
+                <td>
+                    <input type="text" v-model="model.account">
+                </td>
+            </tr>
+            <tr>
+                <th>密碼</th>
+                <td>
+                    <input type="text" v-model="model.password">
+                </td>
+                <td>
+                    <button type="button" @click="checkAccount()">送出</button>
+                </td>
+            </tr>
+            <tr>
+                <th>驗證碼</th>
+                <td>
+                    <img v-for="(word) in verifyCode.split('')" :src="'src/pic/'+word+'.png'" alt="" width="30"
+                        height="30">
+                </td>
+                <td>
+                    <button type="button" @click="randomVerifyCode()">重新產生</button>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td>
+                    <input type="text" v-model="model.verifyCode">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script src="src/js/Login.js"></script>
+</body>
+
+</html>

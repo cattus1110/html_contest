@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>會員管理</title>
+    <script src="src/js/vue.js"></script>
+    <style>
+        .menu {
+            display: inline-block;
+            width: 20%;
+            vertical-align: top;
+        }
+
+        .content {
+            display: inline-block;
+            width: 80%;
+            vertical-align: top;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="menu">
+            目前登入帳號=>{{userinfo.account}}
+            <ul>
+                <li><a href="#" @click="menuEvent(1)">會員管理</a></li>
+                <li><a href="#" @click="menuEvent(2)">登入登出紀錄</a></li>
+                <li><a href="#" @click="menuEvent(3)">工作項目</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div v-if="menuState==1">
+                <h3>會員管理</h3>
+                <div style="text-align: right;width: 80%;">
+                    <input type="button" value="新增" @click="addMember">
+                </div>
+                <table border="1" style="width: 80%">
+                    <tr>
+                        <th>id</th>
+                        <th>Account</th>
+                        <th>Password</th>
+                        <th>Role</th>
+                        <th>功能</th>
+                    </tr>
+                    <tr v-for="user in users">
+                        <td>{{user.id}}</td>
+                        <td>{{user.account}}</td>
+                        <td>{{user.password}}</td>
+                        <td>{{convertToRoleText(user.role)}}</td>
+                        <td>
+                            <input type="button" value="修改" @click="editUser(user)"></input>
+                            <input type="button" value="刪除" @click="deleteUser(user)"></input>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <div v-if="editState">
+                    <table border="1" style="width: 40%;">
+                        <tr>
+                            <td>帳號</td>
+                            <td>
+                                <input type="text" v-model="model.account">
+                                <input type="hidden" name="id" v-model="model.id">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>密碼</td>
+                            <td>
+                                <input type="text" v-model="model.password">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>權限</td>
+                            <td>
+                                <select v-model="model.role">
+                                    <option value="0">系統管理者</option>
+                                    <option value="1">一般使用者</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button type="button" @click="saveUser()">儲存</button>
+                                <button type="button" @click="cancelUser()">取消</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div v-if="menuState==2">
+                <h3>登入登出紀錄</h3>
+                <table border="1" style="width: 80%">
+                    <tr>
+                        <th>id</th>
+                        <th>Account</th>
+                        <th>登入狀況</th>
+                        <th>登入時間</th>
+                    </tr>
+                    <tr v-for="log in loginLog">
+                        <td>{{log.id}}</td>
+                        <td>{{log.account}}</td>
+                        <td>{{log.login_state == 0 ? '失敗' : '成功'}}</td>
+                        <td>{{log.event_time}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="src/js/ManagementMember.js"></script>
+</body>
+
+</html>
